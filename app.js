@@ -92,6 +92,8 @@ function volverIntentar(){
 function terminarJuego(){
     deshabilitar(btn_volver)
     deshabilitar(btn_rendirse)
+    deshabilitar(nroingresado)
+    deshabilitar(btn_aceptar)
     ocultar(resultado)
     mostrar(final)
     let numeroFinalSacado = '';
