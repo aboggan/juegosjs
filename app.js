@@ -75,7 +75,7 @@ function volverIntentar(){
     listitem.classList.add('list-inline-item')
     listitem.innerHTML = nroingresado.value  
 
-    historialNroIngresado.childNodes[3].appendChild(listitem)
+    historialNroIngresado.querySelector('#lista').appendChild(listitem)
 
     nroingresado.value = ''
     
@@ -113,7 +113,7 @@ function nuevoJuego(){
     obtenerNroRandom()
 
     //Limpio la lista
-    historialNroIngresado.childNodes[3].innerHTML = ''
+    historialNroIngresado.querySelector('#lista').innerHTML = ''
 
     ocultar(historialNroIngresado)
     ocultar(resultado)
