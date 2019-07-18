@@ -9,9 +9,9 @@
 <body>
 	<div class="container">
 		<h1>Juego en Javascript</h1>
-		<button type="button" class="btn btn-primary" id="nuevo">Nuevo Juego</button>
-		 <button type="button" class="btn btn-danger" id="rendirse">Rendirse</button>
-		 <button type="button" class="btn btn-success" id="volver">Volver a intentar</button>
+		<button type="button" class="btn btn-primary" id="nuevo" disabled="disabled">Nuevo Juego</button>
+		 <button type="button" class="btn btn-danger" id="rendirse" disabled="disabled">Rendirse</button>
+		 <button type="button" class="btn btn-success" id="volver" disabled='disabled'>Volver a intentar</button>
 		<hr>
 		<h3>Ingrese 4 números del 1 al 9 (sin repetir):</h3>
 		<div class="row">
@@ -21,17 +21,19 @@
 			<div class="col-3"><button class="btn btn-info" id="aceptar">Aceptar</button></div>
 		</div>
 		<br>
-		<div class="alert alert-primary hide col-5" role="alert" id="result">
+		<div id="final" class="hide alert alert-success col-5 "></div>
+		<div class="alert alert-danger hide col-5" role="alert" id="result">
   			2 Cifras Buenas y dos Regulares
 		</div>
-		<div id="numerosIngresados" class="hide">
+		<div id="numerosIngresados" class="col-5 p-0 hide">
 			<h5>Números Ingresados:</h5>
-	
+			<ul class="list-inline" id="lista"></ul>
 		</div>
 		<div class="alert alert-danger hide" role="alert" id="response">
 
 		</div>
 	</div>
+	<script src="utils.js"></script>
 	<script src="app.js"></script>
 </body>
 </html>

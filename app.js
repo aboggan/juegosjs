@@ -1,15 +1,11 @@
-
-let numeros = [1,2,3,4,5,6,7,8,9]
-let sacados = new Array()
-let cifrasBuenas = 0
-let cifrasRegulares = 0
-let nroingresado = document.querySelector('#n1')
-let nrosIntentados = new Array()
 window.onload = ()=>{
-    let btn_aceptar = document.querySelector('#aceptar')
-    btn_aceptar.addEventListener('click',intentar)
+
     obtenerNroRandom()
 
+    btn_aceptar.addEventListener('click',intentar)
+    btn_volver.addEventListener('click', volverIntentar)
+    btn_rendirse.addEventListener('click', terminarJuego)
+    btn_nuevo.addEventListener('click',nuevoJuego)
     nroingresado.addEventListener('keypress',
     function(event){
         let char = event.charCode || event.keyCode
@@ -17,42 +13,25 @@ window.onload = ()=>{
             event.preventDefault()
         }
     })
-
-
-}
-
-
-const verificarDuplicados = (arr) => {
-    let seen = new Set();
-    let store = new Array();
-    arr.filter(item => seen.size === seen.add(item).size && !store.includes(item) && store.push(item))
-    if (store.length == 0){
-        return false
-    }else{
-        return true
-    }
 }
 
 function intentar(){
     let ingresados = new Array()
     let arrayIngresado = nroingresado.value.split('')
     
-
     for (let i = 0; i < 4; i++) {
         if(isNaN(Number(arrayIngresado[i]))){
             alert("Cuatro numeros porfa")
+            nroingresado.focus()
             return false
         }
         ingresados.push(Number(arrayIngresado[i]))
     }
-    console.log(verificarDuplicados(ingresados))
-
-    
-    if ( verificarDuplicados(ingresados)){
+    if (verificarDuplicados(ingresados)){
         alert("Sin numeros duplicados")
+        nroingresado.focus()
         return false
     }
-    console.log("numeros ingresados",ingresados)
 
     ingresados.some((nro_ingresado, posicion_ingresado)=>{
         sacados.some((nro_sacado, posicion_sacado)=>{
@@ -64,30 +43,108 @@ function intentar(){
                 }
             }
         })
-
     })
 
-    nrosIntentados.push(nroingresado)
-    let resultado = document.querySelector('#result')
-    let numerosIngresados = document.querySelector('#numerosIngresados')
+    if(cifrasBuenas == 4){
+        alert("zarpado! ganaste!")
+        mostrarGanador()
+        return false
+    }
 
-    resultado.classList.remove('hide')
+    mostrar(resultado)
+
+    //Hacer que tiemble
+    resultado.classList.add('apply-shake')
+
     resultado.innerHTML = cifrasBuenas + " Cifras buenas - " +cifrasRegulares+" Cifras regulares"
     
-    //numerosIngresados.classList.remove('hide')
-    numerosIngresados.innerHTML += nroingresado.value
+    deshabilitar(nroingresado)
+    deshabilitar(btn_aceptar)
 
+    habilitar(btn_volver)
+    habilitar(btn_rendirse)  
+    habilitar(btn_nuevo)
+}
 
+function volverIntentar(){
+    habilitar(nroingresado)
+    habilitar(btn_aceptar)
+    mostrar(historialNroIngresado)
+
+    let listitem = document.createElement("li");
+    listitem.classList.add('list-inline-item')
+    listitem.innerHTML = nroingresado.value  
+
+    historialNroIngresado.childNodes[3].appendChild(listitem)
+
+    nroingresado.value = ''
+    
     cifrasBuenas = 0
     cifrasRegulares = 0
 
+    //Quitar el shake para poder animarlo de nuevo en el futuro
+    resultado.classList.remove('apply-shake')
+
+    nroingresado.focus()
+    deshabilitar(btn_volver)
 }
 
-function obtenerNroRandom(){
-    for (let i = 0; i<4; i++){
-        let indiceRandom = parseInt(Math.random() * numeros.length);
-        sacados.push(numeros[indiceRandom])
-        numeros.splice(indiceRandom,1)
-    }   
-    console.log("numeros sacados",sacados)
+function terminarJuego(){
+    deshabilitar(btn_volver)
+    deshabilitar(btn_rendirse)
+    ocultar(resultado)
+    mostrar(final)
+    let numeroFinalSacado = '';
+    for (let i = 0; i < sacados.length; i++) {
+        numeroFinalSacado += sacados[i].toString();
+        
+    }
+    
+    //Quitar el shake para poder animarlo de nuevo en el futuro
+    resultado.classList.remove('apply-shake')
+    final.innerHTML= "El numero era: "+numeroFinalSacado
+}
+
+function nuevoJuego(){
+    numeros = [1,2,3,4,5,6,7,8,9]
+    sacados = new Array()
+    cifrasBuenas = 0
+    cifrasRegulares = 0
+    obtenerNroRandom()
+
+    //Limpio la lista
+    historialNroIngresado.childNodes[3].innerHTML = ''
+
+    ocultar(historialNroIngresado)
+    ocultar(resultado)
+    ocultar(final)
+
+    //Quitar el shake para poder animarlo de nuevo en el futuro
+    resultado.classList.remove('apply-shake')
+    
+    habilitar(btn_aceptar)
+
+    habilitar(nroingresado)
+    nroingresado.value = ''
+    nroingresado.focus()
+
+    deshabilitar(btn_rendirse)
+    deshabilitar(btn_volver)
+    deshabilitar(btn_nuevo)
+}
+
+function mostrarGanador(){
+    mostrar(final)
+    let numeroFinalSacado = '';
+    for (let i = 0; i < sacados.length; i++) {
+        numeroFinalSacado += sacados[i].toString();       
+    }
+    final.innerHTML = "ZARPADO! GANASTE! El numero era: "+numeroFinalSacado
+ 
+    deshabilitar(nroingresado)
+    deshabilitar(btn_aceptar)
+    deshabilitar(btn_rendirse)
+
+    ocultar(resultado)
+    habilitar(btn_nuevo)
 }
